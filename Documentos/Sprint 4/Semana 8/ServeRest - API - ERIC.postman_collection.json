@@ -1,0 +1,1059 @@
+{
+	"info": {
+		"_postman_id": "e62bd730-2e0a-4e7f-b949-50ea09b0995e",
+		"name": "ServeRest - API - ERIC",
+		"description": "Coleção de testes automatizados (Tests + Pre-request) para ServeRest baseada em critérios de aceite: Usuários, Login, Produtos e Carrinhos. Ajuste a variável `baseUrl` conforme seu ambiente.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "46691949"
+	},
+	"item": [
+		{
+			"name": "Usuários",
+			"item": [
+				{
+					"name": "POST /usuarios - Criar usuário válido (201)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"201 Created\", () => pm.response.to.have.status(201));\nconst j = pm.response.json();\npm.test(\"Retorna id\", () => pm.expect(j._id || j.id).to.exist);\nconst id = j._id || j.id;\nif (id) pm.collectionVariables.set(\"userId\", id);\npm.collectionVariables.set(\"email_duplicate\", pm.collectionVariables.get(\"email_valid\"));\n"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"nome\": \"Teste QA\", \"email\": \"{{email_valid}}\", \"password\": \"{{password_valid}}\", \"administrador\": \"true\"}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/usuarios",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"usuarios"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST /usuarios - E-mail duplicado (400)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"400 ao tentar e-mail duplicado\", ()=> pm.response.to.have.status(400));",
+									"pm.test(\"Mensagem indica e-mail já utilizado\", () => { const txt = pm.response.text().toLowerCase(); pm.expect(txt).to.include(\"email\"); pm.expect(txt).to.satisfy(t => t.includes(\"já\") || t.includes(\"exist\"));});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"nome\": \"Teste QA Dup\", \"email\": \"{{email_duplicate}}\", \"password\": \"senha2\", \"administrador\": \"true\"}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/usuarios",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"usuarios"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST /usuarios - Bloquear Gmail (400)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"400 ao usar provedor bloqueado\", ()=> pm.response.to.have.status(400));",
+									"pm.test(\"Mensagem de bloqueio de domínio\", ()=> { const txt = pm.response.text().toLowerCase(); pm.expect(txt).to.include(\"email\");});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"nome\": \"Teste Gmail\", \"email\": \"{{email_blocked_gmail}}\", \"password\": \"senha1\", \"administrador\": \"true\"}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/usuarios",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"usuarios"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST /usuarios - Bloquear Hotmail (400)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"400 ao usar provedor bloqueado\", ()=> pm.response.to.have.status(400));",
+									"pm.test(\"Mensagem de bloqueio de domínio\", ()=> { const txt = pm.response.text().toLowerCase(); pm.expect(txt).to.include(\"email\");});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"nome\": \"Teste Hotmail\", \"email\": \"{{email_blocked_hotmail}}\", \"password\": \"senha1\", \"administrador\": \"true\"}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/usuarios",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"usuarios"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST /usuarios - Senha curta (400)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"400 senha curta (4)\", ()=> pm.response.to.have.status(400));",
+									"pm.test(\"Mensagem sobre senha\", ()=> { const t = pm.response.text().toLowerCase(); pm.expect(t).to.satisfy(x=>x.includes('senha')||x.includes('password'));});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"nome\": \"Senha Curta\", \"email\": \"{{email_valid}}\", \"password\": \"{{password_short}}\", \"administrador\": \"true\"}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/usuarios",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"usuarios"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST /usuarios - Senha longa (400)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"400 senha longa (11)\", ()=> pm.response.to.have.status(400));",
+									"pm.test(\"Mensagem sobre senha\", ()=> { const t = pm.response.text().toLowerCase(); pm.expect(t).to.satisfy(x=>x.includes('senha')||x.includes('password'));});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"nome\": \"Senha Longa\", \"email\": \"{{email_valid}}\", \"password\": \"{{password_long}}\", \"administrador\": \"true\"}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/usuarios",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"usuarios"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET /usuarios - Listar (200)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"200 OK\", ()=> pm.response.to.have.status(200));",
+									"pm.test(\"Lista não vazia (após criação)\", ()=> { const j=pm.response.json(); const arr = j.usuarios || j.data || []; pm.expect(arr.length).to.be.greaterThan(0);});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/usuarios",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"usuarios"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET / Buscar usuário por ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status 200\", ()=> pm.response.to.have.status(200));"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/usuarios/{{userId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"usuarios",
+								"{{userId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE /usuarios/:id - Deletar (200)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"200 Deleted\", ()=> pm.response.to.have.status(200));"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/usuarios/{{userId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"usuarios",
+								"{{userId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Login",
+			"item": [
+				{
+					"name": "POST /login - Autenticar válido (200)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"200 OK\", ()=> pm.response.to.have.status(200));\nconst j = pm.response.json();\npm.test(\"Retorna token\", ()=> pm.expect(j.authorization || j.token).to.exist);\nconst token = (j.authorization || j.token || \"\").toString();\npm.collectionVariables.set(\"token\", token.replace(/^Bearer\\s+/i,''));\npm.collectionVariables.set(\"token_issued_at\", String(Date.now()));\n"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"email\": \"{{email_valid}}\", \"password\": \"{{password_valid}}\"}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST /login - Usuário inexistente (401)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"401 Unauthorized (usuário inexistente)\", ()=> pm.response.to.have.status(401));"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"email\": \"naoexiste_1755540163@example.com\", \"password\": \"senha1\"}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST /login - Senha inválida (401)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"401 Unauthorized (senha inválida)\", ()=> pm.response.to.have.status(401));"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"email\": \"{{email_valid}}\", \"password\": \"errada\"}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Produtos (Protegidas)",
+			"item": [
+				{
+					"name": "POST /produtos - Criar sem token (401)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"401 sem token\", ()=> pm.response.to.have.status(401));"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"nome\": \"SemToken_{{product_name}}\", \"preco\": 100, \"descricao\": \"Item sem token\", \"quantidade\": 1}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/produtos",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"produtos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST /produtos - Criar válido (201)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"201 Created\", ()=> pm.response.to.have.status(201));\nconst j = pm.response.json();\npm.test(\"Retorna _id\", ()=> pm.expect(j._id || j.id).to.exist);\npm.collectionVariables.set(\"productId\", j._id || j.id);\n"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"nome\": \"{{product_name}}\", \"preco\": 100, \"descricao\": \"Teclado mecânico QA\", \"quantidade\": 5}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/produtos",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"produtos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST /produtos - Impedir nome duplicado (400)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"400 nome de produto duplicado\", ()=> pm.response.to.have.status(400));"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"nome\": \"{{product_name}}\", \"preco\": 100, \"descricao\": \"Duplicado\", \"quantidade\": 1}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/produtos",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"produtos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET /produtos - Listar (200)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"200 OK\", ()=> pm.response.to.have.status(200));",
+									"pm.test(\"Lista contém item criado\", ()=> { const j=pm.response.json(); const arr=j.produtos||j.data||[]; pm.expect(arr.some(p=>p.nome===pm.collectionVariables.get('product_name'))).to.be.true;});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/produtos",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"produtos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET /produtos/:id - Buscar por ID (200)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"200 OK\", ()=> pm.response.to.have.status(200));",
+									"pm.test(\"Produto possui campos essenciais\", ()=> { const j=pm.response.json(); pm.expect(j).to.have.property('nome'); pm.expect(j).to.have.property('preco');});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/produtos/{{productId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"produtos",
+								"{{productId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PUT /produtos/:id inexistente - Upsert (200/201)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"200/201 PUT cria/atualiza quando ID não existe\", ()=> pm.expect(pm.response.code).to.be.oneOf([200,201]));"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"nome\": \"UpsertProduto_{{product_name}}\", \"preco\": 150, \"descricao\": \"Upsert\", \"quantidade\": 2}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/produtos/{{nonexistentId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"produtos",
+								"{{nonexistentId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE /produtos/:id - Excluir (200 ou 400 se em carrinho)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Deleção 200 ou bloqueio 400 se em carrinho\", ()=> pm.expect([200,400]).to.include(pm.response.code));"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/produtos/{{productId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"produtos",
+								"{{productId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{token}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"const t = pm.collectionVariables.get(\"token\");",
+							"if (t) {",
+							"  pm.request.headers.upsert({ key: \"Authorization\", value: `Bearer ${t}` });",
+							"}",
+							"const issuedAt = Number(pm.collectionVariables.get(\"token_issued_at\") || 0);",
+							"if (issuedAt && (Date.now() - issuedAt) > 10*60*1000) {",
+							"  console.warn(\"Token pode estar expirado (>=10 min).\");",
+							"}",
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Carrinhos (Protegidas)",
+			"item": [
+				{
+					"name": "POST /carrinhos - Criar com produto (201)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"201 Created carrinho\", ()=> pm.response.to.have.status(201));\nconst j = pm.response.json();\npm.test(\"Retorna id do carrinho\", ()=> pm.expect(j._id || j.id).to.exist);\npm.collectionVariables.set(\"cartId\", j._id || j.id);\n"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"produtos\": [{\"idProduto\": \"{{productId}}\", \"quantidade\": 1}]}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/carrinhos",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"carrinhos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST /carrinhos - Produto inexistente (400)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"400 produto inexistente\", ()=> pm.response.to.have.status(400));"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"produtos\": [{\"idProduto\": \"{{nonexistentId}}\", \"quantidade\": 1}]}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/carrinhos",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"carrinhos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET /carrinhos/:id - Buscar (200)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"200 OK\", ()=> pm.response.to.have.status(200));",
+									"pm.test(\"Retorna itens e totais\", ()=> { const j=pm.response.json(); pm.expect(j).to.have.property('produtos');});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/carrinhos/{{cartId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"carrinhos",
+								"{{cartId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE /carrinhos/:id - Remover (200)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"200 carrinho removido\", ()=> pm.response.to.have.status(200));"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/carrinhos/{{cartId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"carrinhos",
+								"{{cartId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Operações sem token - Criar carrinho (401)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"401 sem token nas rotas de carrinho\", ()=> pm.response.to.have.status(401));"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"produtos\": [{\"idProduto\": \"{{productId}}\", \"quantidade\": 1}]}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/carrinhos",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"carrinhos"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"const t = pm.collectionVariables.get(\"token\");\nif (t) {\n  pm.request.headers.upsert({ key: \"Authorization\", value: `Bearer ${t}` });\n}\n"
+						]
+					}
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"(function () {\n  const now = Date.now();\n  const uniq = (p) => `${p}_${now}_${Math.floor(Math.random()*1e6)}`;\n  const pick = (arr) => arr[Math.floor(Math.random()*arr.length)];\n\n  const allowedDomains = [\"example.com\", \"qa.dev\", \"test.local\"];\n  const email = `${uniq(\"tester\")}@${pick(allowedDomains)}`;\n  const productName = uniq(\"Produto_QA\");\n  const passwordValid = \"senha1\"; // 6 chars (5-10)\n\n  pm.collectionVariables.set(\"email_valid\", email);\n  pm.collectionVariables.set(\"email_duplicate\", pm.collectionVariables.get(\"email_duplicate\") || email);\n  pm.collectionVariables.set(\"email_blocked_gmail\", `${uniq(\"tester\")}@gmail.com`);\n  pm.collectionVariables.set(\"email_blocked_hotmail\", `${uniq(\"tester\")}@hotmail.com`);\n  pm.collectionVariables.set(\"password_valid\", passwordValid);\n  pm.collectionVariables.set(\"password_short\", \"abcd\");\n  pm.collectionVariables.set(\"password_long\", \"abcdefghijk\");\n  pm.collectionVariables.set(\"product_name\", productName);\n  pm.collectionVariables.set(\"product_price\", \"100\");\n  pm.collectionVariables.set(\"product_qty\", \"5\");\n\n  const issuedAt = pm.collectionVariables.get(\"token_issued_at\");\n  if (issuedAt) {\n    const ageMs = now - Number(issuedAt);\n    if (ageMs > 10 * 60 * 1000) {\n      pm.collectionVariables.unset(\"token\");\n      pm.collectionVariables.unset(\"token_issued_at\");\n    }\n  }\n})();\n"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"pm.test(\"Resposta chegou\", () => pm.response.to.be.ok);",
+					"pm.test(\"Tem Content-Type\", () => pm.response.to.have.header(\"Content-Type\"));"
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "https://serverest.dev"
+		},
+		{
+			"key": "email_valid",
+			"value": ""
+		},
+		{
+			"key": "email_duplicate",
+			"value": ""
+		},
+		{
+			"key": "email_blocked_gmail",
+			"value": ""
+		},
+		{
+			"key": "email_blocked_hotmail",
+			"value": ""
+		},
+		{
+			"key": "password_valid",
+			"value": ""
+		},
+		{
+			"key": "password_short",
+			"value": ""
+		},
+		{
+			"key": "password_long",
+			"value": ""
+		},
+		{
+			"key": "token",
+			"value": ""
+		},
+		{
+			"key": "token_issued_at",
+			"value": ""
+		},
+		{
+			"key": "userId",
+			"value": ""
+		},
+		{
+			"key": "product_name",
+			"value": ""
+		},
+		{
+			"key": "product_price",
+			"value": ""
+		},
+		{
+			"key": "product_qty",
+			"value": ""
+		},
+		{
+			"key": "productId",
+			"value": ""
+		},
+		{
+			"key": "cartId",
+			"value": ""
+		},
+		{
+			"key": "nonexistentId",
+			"value": "999999999999999999999999"
+		},
+		{
+			"key": "token",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "token",
+			"value": ""
+		}
+	]
+}
