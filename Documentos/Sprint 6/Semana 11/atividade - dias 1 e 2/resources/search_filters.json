@@ -1,0 +1,26 @@
+{
+  "by_firstname": {
+    "firstname": "John"
+  },
+  "by_lastname": {
+    "lastname": "Doe"
+  },
+  "by_name": {
+    "firstname": "John",
+    "lastname": "Doe"
+  },
+  "by_checkin": {
+    "checkin": "2025-01-15"
+  },
+  "by_checkout": {
+    "checkout": "2025-01-20"
+  },
+  "by_date_range": {
+    "checkin": "2025-01-15",
+    "checkout": "2025-01-20"
+  },
+  "nonexistent_user": {
+    "firstname": "NonExistent",
+    "lastname": "User"
+  }
+}

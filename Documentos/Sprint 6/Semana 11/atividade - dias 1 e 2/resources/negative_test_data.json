@@ -1,0 +1,33 @@
+{
+  "missing_required_fields": {
+    "firstname": "Test"
+  },
+  "invalid_data_types": {
+    "firstname": "Test",
+    "lastname": "User",
+    "totalprice": "not_a_number",
+    "depositpaid": "not_boolean",
+    "bookingdates": {
+      "checkin": "invalid_date",
+      "checkout": "2025-01-20"
+    }
+  },
+  "empty_payload": {},
+  "null_values": {
+    "firstname": null,
+    "lastname": null,
+    "totalprice": null,
+    "depositpaid": null,
+    "bookingdates": null
+  },
+  "boundary_values": {
+    "firstname": "",
+    "lastname": "A",
+    "totalprice": -1,
+    "depositpaid": true,
+    "bookingdates": {
+      "checkin": "2025-12-31",
+      "checkout": "2025-01-01"
+    }
+  }
+}
