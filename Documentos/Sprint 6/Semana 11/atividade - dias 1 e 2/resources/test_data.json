@@ -1,0 +1,39 @@
+{
+  "valid_booking": {
+    "firstname": "John",
+    "lastname": "Doe",
+    "totalprice": 150,
+    "depositpaid": true,
+    "bookingdates": {
+      "checkin": "2025-01-15",
+      "checkout": "2025-01-20"
+    },
+    "additionalneeds": "Breakfast"
+  },
+  "updated_booking": {
+    "firstname": "Jane",
+    "lastname": "Smith",
+    "totalprice": 200,
+    "depositpaid": false,
+    "bookingdates": {
+      "checkin": "2025-02-10",
+      "checkout": "2025-02-15"
+    },
+    "additionalneeds": "WiFi"
+  },
+  "partial_update": {
+    "additionalneeds": "Late checkout"
+  },
+  "invalid_booking": {
+    "firstname": "Test",
+    "totalprice": "invalid_price"
+  },
+  "auth_valid": {
+    "username": "admin",
+    "password": "password123"
+  },
+  "auth_invalid": {
+    "username": "admin",
+    "password": "wrongpassword"
+  }
+}
