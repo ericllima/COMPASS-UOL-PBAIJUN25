@@ -16,11 +16,11 @@
 
 ## 2) Cobertura por endpoint (o que foi adicionado/ajustado)
 - **`/ping` (Healthcheck)**
-    - ✅ Verificar disponibilidade do serviço (esperado: 2xx/201).
-    - 🔁 Rodar antes dos suites (gate) — se falhar, aborta suite.
+    - Verificar disponibilidade do serviço (esperado: 2xx/201).
+    - Rodar antes dos suites (gate) — se falhar, aborta suite.
 - **`/auth`**
-    - ✅ Geração de token com credenciais válidas (corpo contém `token`).
-    - ❌ Credenciais inválidas (mensagem de falha no body); sem token.
+    - Geração de token com credenciais válidas (corpo contém `token`).
+    - Credenciais inválidas (mensagem de falha no body); sem token.
 - **`/booking` — CRUD**
     - **POST** criar booking válido (retorna `bookingid`).
     - **GET {id}** retorna dados consistentes do booking criado.
@@ -51,7 +51,7 @@
 - **Variáveis** centralizadas: `${BASE_URL}`, caminhos (`/booking`), timeouts, credenciais.
 - **Headers base** (`Content-Type`/`Accept`: `application/json`).
 - **Keywords `* On Session`**: `GET/POST/PUT/PATCH/DELETE On Session`.
-- **Tratamento de erro**: asserções de **status** e de **mensagens** de erro (quando 4xx/5xx).
+- **Tratamento de erro**: asserções de **status** e de **mensagens** de erro (quando 404/502).
 - **Dados**: geração dinâmica de payloads (datas atuais + offset), **cleanup** do `bookingid` criado.
 - **Tagging**: `smoke`, `regression`, `p1/p2/p3`, `negative`, `filters`, `restfulbooker`.
 - **Resiliência**: `Wait Until Keyword Succeeds` ou tentativas com backoff para instabilidades da API pública.
