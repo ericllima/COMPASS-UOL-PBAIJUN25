@@ -19,8 +19,20 @@ Generate Unique Name
     RETURN    ${name}
 
 Get Valid Auth Token
-    [Documentation]    Obtém token de autenticação válido
-    &{login_data}=    Create Dictionary    email=admin@serverest.com    password=admin
+    [Documentation]    Obtém token de autenticação válido usando usuário padrão
+    # Primeiro garantir que usuário admin existe
+    &{admin_user}=    Create Dictionary
+    ...    nome=QA Test
+    ...    email=qatest@qa.com.br
+    ...    password=qateste
+    ...    administrador=true
+    
+    ${resp_user}=    POST On Session    booker    /usuarios    json=${admin_user}    expected_status=any
+    # Se já existe (400) ou criou (201), ambos OK
+    Should Be True    ${resp_user.status_code} in [201, 400]
+    
+    # Fazer login
+    &{login_data}=    Create Dictionary    email=qatest@qa.com.br    password=qateste
     ${resp}=    POST On Session    booker    /login    json=${login_data}
     Should Be Equal As Integers    ${resp.status_code}    200
     ${token}=    Get From Dictionary    ${resp.json()}    authorization
@@ -80,3 +92,17 @@ Delete Product If Exists
     ${headers}=    Create Auth Headers    ${token}
     ${resp}=    DELETE On Session    booker    /produtos/${product_id}    headers=${headers}    expected_status=any
     Log    Product deletion status: ${resp.status_code}
+
+Validate Error Response
+    [Arguments]    ${response}    ${expected_status}    ${expected_message_contains}=${EMPTY}
+    [Documentation]    Valida resposta de erro padrão
+    Should Be Equal As Integers    ${response.status_code}    ${expected_status}
+    ${body}=    Set Variable    ${response.json()}
+    Dictionary Should Contain Key    ${body}    message
+    Run Keyword If    '${expected_message_contains}' != '${EMPTY}'
+    ...    Should Contain    ${body['message']}    ${expected_message_contains}
+
+Get Auth Token
+    [Documentation]    Alias para Get Valid Auth Token (compatibilidade)
+    ${token}=    Get Valid Auth Token
+    RETURN    ${token}
