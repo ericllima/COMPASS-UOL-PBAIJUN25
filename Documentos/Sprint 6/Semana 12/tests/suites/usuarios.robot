@@ -151,10 +151,31 @@ U004 - Validar limites de senha
     ${body_longa}=    Set Variable    ${resp_longa.json()}
     Dictionary Should Contain Key    ${body_longa}    password
 
+U005 - PUT cria quando ID não existe
+    [Tags]    smoke    usuarios    U005
+    [Documentation]    PUT em ID inexistente deve criar novo usuário
+    ${id_inexistente}=    Set Variable    507f1f77bcf86cd799439011
+    ${email}=    Generate Unique Email
+    ${nome}=    Generate Unique Name    Usuario PUT
+    
+    &{usuario_put}=    Create Dictionary
+    ...    nome=${nome}
+    ...    email=${email}
+    ...    password=teste123
+    ...    administrador=false
+    
+    ${resp}=    PUT On Session    booker    /usuarios/${id_inexistente}    json=${usuario_put}
+    Should Be True    ${resp.status_code} in [200, 201]
+    ${body}=    Set Variable    ${resp.json()}
+    Dictionary Should Contain Key    ${body}    message
+    
+    # Cleanup - deletar usuário criado
+    DELETE On Session    booker    /usuarios/${id_inexistente}    expected_status=any
+
 U007 - Impedir operações com usuário inexistente
     [Tags]    negativo    usuarios    U007
     [Documentation]    Operações com ID inexistente devem retornar 400
-    ${id_inexistente}=    Set Variable    507f1f77bcf86cd799439011
+    ${id_inexistente}=    Set Variable    507f1f77bcf86cd799439012
     
     # GET com ID inexistente
     ${resp_get}=    GET On Session    booker    /usuarios/${id_inexistente}    expected_status=any
