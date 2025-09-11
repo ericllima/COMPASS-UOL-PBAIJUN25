@@ -22,8 +22,9 @@ C001 - Criar carrinho com produto existente
     ...    idProduto=${produto_id}
     ...    quantidade=1
     
+    @{produtos_lista}=    Create List    ${produto_carrinho}
     &{carrinho_data}=    Create Dictionary
-    ...    produtos=@{[${produto_carrinho}]}
+    ...    produtos=${produtos_lista}
     
     ${headers}=    Create Auth Headers    ${token}
     ${resp}=    POST On Session    booker    /carrinhos    json=${carrinho_data}    headers=${headers}
@@ -45,8 +46,9 @@ C002 - Impedir produto inexistente
     ...    idProduto=${id_inexistente}
     ...    quantidade=1
     
+    @{produtos_lista}=    Create List    ${produto_inexistente}
     &{carrinho_data}=    Create Dictionary
-    ...    produtos=@{[${produto_inexistente}]}
+    ...    produtos=${produtos_lista}
     
     ${headers}=    Create Auth Headers    ${AUTH_TOKEN}
     ${resp}=    POST On Session    booker    /carrinhos    json=${carrinho_data}    headers=${headers}    expected_status=any
@@ -105,8 +107,9 @@ C006 - Acesso sem autenticação
     ...    idProduto=507f1f77bcf86cd799439011
     ...    quantidade=1
     
+    @{produtos_lista}=    Create List    ${produto_data}
     &{carrinho_data}=    Create Dictionary
-    ...    produtos=@{[${produto_data}]}
+    ...    produtos=${produtos_lista}
     
     ${resp}=    POST On Session    booker    /carrinhos    json=${carrinho_data}    expected_status=any
     Should Be Equal As Integers    ${resp.status_code}    401

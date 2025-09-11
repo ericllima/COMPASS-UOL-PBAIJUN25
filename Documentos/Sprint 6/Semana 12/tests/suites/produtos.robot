@@ -104,7 +104,7 @@ P003 - Impedir nome de produto duplicado
     ${headers}=    Create Auth Headers    ${AUTH_TOKEN}
     
     # Criar primeiro produto
-    ${resp1}=    POST On Session    booker    /produtos    json=${produto_dup}    headers=${headers}
+    ${resp1}=    POST On Session    booker    /produtos    json=${produto_dup}    headers=${headers}    expected_status=any
     Should Be Equal As Integers    ${resp1.status_code}    201
     
     # Tentar criar segundo com mesmo nome
@@ -157,15 +157,27 @@ P006 - PUT cria quando ID não existe
 P008 - Bloquear exclusão se em carrinho
     [Tags]    negativo    produtos    P008
     [Documentation]    Produto vinculado a carrinho não pode ser excluído
-    # Nota: Este teste requer implementação de carrinhos
-    # Por enquanto, simula o cenário com produto inexistente
     Skip If    '${AUTH_TOKEN}' == '${EMPTY}'    Token não disponível
     
     ${headers}=    Create Auth Headers    ${AUTH_TOKEN}
-    ${id_inexistente}=    Set Variable    507f1f77bcf86cd799439011
     
-    ${resp}=    DELETE On Session    booker    /produtos/${id_inexistente}    headers=${headers}    expected_status=any
-    Should Be Equal As Integers    ${resp.status_code}    200
+    # Criar produto para teste
+    ${produto_id}=    Create Test Product    ${AUTH_TOKEN}
+    
+    # Criar carrinho com o produto
+    &{produto_item}=    Create Dictionary    idProduto=${produto_id}    quantidade=1
+    @{produtos_lista}=    Create List    ${produto_item}
+    &{carrinho_data}=    Create Dictionary    produtos=${produtos_lista}
+    ${resp_carrinho}=    POST On Session    booker    /carrinhos    json=${carrinho_data}    headers=${headers}
+    Should Be Equal As Integers    ${resp_carrinho.status_code}    201
+    
+    # Tentar deletar produto que está em carrinho
+    ${resp}=    DELETE On Session    booker    /produtos/${produto_id}    headers=${headers}    expected_status=any
+    Should Be Equal As Integers    ${resp.status_code}    400
     ${body}=    Set Variable    ${resp.json()}
     Dictionary Should Contain Key    ${body}    message
-    Should Contain    ${body['message']}    não encontrado
+    Should Contain    ${body['message']}    faz parte de carrinho
+    
+    # Cleanup - cancelar carrinho e deletar produto
+    DELETE On Session    booker    /carrinhos/cancelar-compra    headers=${headers}    expected_status=any
+    DELETE On Session    booker    /produtos/${produto_id}    headers=${headers}    expected_status=any

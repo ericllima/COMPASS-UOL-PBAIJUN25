@@ -5,8 +5,8 @@ Validar endpoints críticos da API ServeRest hospedada na EC2, cobrindo fluxos p
 
 ## 🌐 Ambiente
 - **SUT**: ServeRest na EC2
-- **BASE_URL**: http://54.147.59.9:3000
-- **Endpoints**: /status, /login, /usuarios, /produtos
+- **BASE_URL**: http://54.242.186.180:3000
+- **Endpoints**: /status, /login, /usuarios, /produtos, /carrinhos
 
 ## 📁 Estrutura do Projeto
 ```
@@ -15,7 +15,8 @@ tests/
 │   ├── health.robot      # Testes de saúde da API
 │   ├── login.robot       # Testes de autenticação
 │   ├── usuarios.robot    # CRUD de usuários
-│   └── produtos.robot    # CRUD de produtos
+│   ├── produtos.robot    # CRUD de produtos
+│   └── carrinhos.robot   # CRUD de carrinhos
 ├── resources/
 │   └── keywords.robot    # Keywords reutilizáveis
 └── variables.robot       # Configurações centrais
@@ -45,29 +46,26 @@ robot -d reports -i negativo tests/suites
 robot -d reports tests/suites/login.robot
 ```
 
-## 📋 Casos de Teste Implementados
+## 📊 Resultados Finais
 
-### Health/Status
-- ✅ SRV-health-200-positivo
+**Taxa de Sucesso:** 80% (24/30 testes)  
+**Cobertura:** 4 módulos principais da API ServeRest
 
-### Login
-- ✅ SRV-login-token-positivo
-- ✅ SRV-login-credenciais-invalidas-negativo
+### Por Módulo
+| Módulo | Testes | Passou | Taxa |
+|--------|--------|--------|------|
+| Health | 1 | 1 | 100% |
+| Login | 6 | 6 | 100% |
+| Carrinhos | 6 | 6 | 100% |
+| Produtos | 8 | 5 | 62% |
+| Usuários | 9 | 6 | 67% |
 
-### Usuários
-- ✅ SRV-usuarios-criar-positivo
-- ✅ SRV-usuarios-obter-por-id-positivo
-- ✅ SRV-usuarios-atualizar-positivo
-- ✅ SRV-usuarios-deletar-positivo
-- ✅ SRV-usuarios-criar-email-duplicado-negativo
-
-### Produtos
-- ✅ SRV-produtos-criar-positivo
-- ✅ SRV-produtos-listar-positivo
-- ✅ SRV-produtos-obter-por-id-positivo
-- ✅ SRV-produtos-atualizar-positivo
-- ✅ SRV-produtos-deletar-positivo
-- ✅ SRV-produtos-criar-nome-duplicado-negativo
+### Cenários Implementados
+- **H001:** Health check
+- **L001-L005:** Login e autenticação completa
+- **U001-U009:** CRUD usuários (6 sucessos, 3 falhas)
+- **P001-P008:** CRUD produtos (5 sucessos, 3 falhas)
+- **C001-C006:** CRUD carrinhos (100% sucesso)
 
 ## 🏷️ Tags Disponíveis
 - `smoke` - Testes críticos de funcionalidade básica
@@ -76,12 +74,19 @@ robot -d reports tests/suites/login.robot
 - `login` - Testes de autenticação
 - `usuarios` - Testes de usuários
 - `produtos` - Testes de produtos
+- `carrinhos` - Testes de carrinhos
 
 ## 📊 Estratégia de Execução
-- **D1**: Health + Login + Usuários básico
-- **D2**: CRUD completo Usuários + Produtos
-- **D3**: Cenários negativos + estabilidade
-- **D4-D5**: Refinamentos + relatórios finais
+- **D1**: Health + Login + CRUD Usuários/Produtos ✅
+- **D2**: Cenários negativos + Carrinhos ✅
+- **D3**: Validações avançadas + Token expirado ✅
+- **D4-D5**: Execução final + Relatórios ✅
+
+**Status Final:** 30 cenários implementados, 24 sucessos (80%)
+
+## 📋 Documentação
+- **[PROGRESSO_CHALLENGE.md](PROGRESSO_CHALLENGE.md)** - Progresso e resultados finais
+- **[docs/PLANO-D1.md](docs/PLANO-D1.md)** - Escopo inicial D1
 
 ## 🔧 Configuração
 O arquivo `variables.robot` contém as configurações centrais:
@@ -90,7 +95,7 @@ O arquivo `variables.robot` contém as configurações centrais:
 - Configuração de sessão HTTP
 
 ## 📈 Relatórios
-Os relatórios são gerados na pasta `reports/` com:
-- `report.html` - Relatório visual
-- `log.html` - Log detalhado
-- `output.xml` - Dados estruturados
+Relatório final disponível em `reports/final/`:
+- `report.html` - Relatório visual com 30 testes
+- `log.html` - Log detalhado da execução
+- `output.xml` - Dados estruturados para CI/CD
