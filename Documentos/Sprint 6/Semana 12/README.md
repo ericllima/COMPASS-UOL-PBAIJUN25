@@ -114,7 +114,6 @@ robot -i crud tests/            # Operações CRUD
 **Status Final:** 37 cenários implementados, 33 sucessos (89%) - **Challenge concluído!**
 
 ## 📋 Documentação
-- **[docs/PROGRESSO_CHALLENGE.md](docs/PROGRESSO_CHALLENGE.md)** - Progresso completo do Challenge 03
 - **[docs/Plano de Teste - Serverest - Sprint 6.pdf](docs/Plano%20de%20Teste%20-%20Serverest%20-%20Sprint%206.pdf)** - Plano de testes em PDF
 
 ## 🔧 Configuração Flexível
@@ -134,12 +133,4 @@ Relatórios disponíveis em `reports/`:
 - **`log.html`** - Log detalhado com requests/responses
 - **`output.xml`** - Dados estruturados para integração CI/CD
 
-## 🏆 Conquistas do Challenge
-- ✅ **115% do planejado** (37/32 cenários)
-- ✅ **89% taxa de sucesso** alcançada
-- ✅ **7 módulos funcionais** implementados
-- ✅ **20+ keywords reutilizáveis** desenvolvidas
-- ✅ **Documentação completa** entregue
-- ✅ **Execução remota** configurada (EC2)
-
-**Challenge 03 - Sprint 6 - Semana 12: CONCLUÍDO COM EXCELÊNCIA! 🎯**
+**Challenge 03 - Sprint 6 - Semana 12**
