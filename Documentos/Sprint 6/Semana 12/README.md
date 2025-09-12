@@ -1,25 +1,34 @@
 # Challenge 03 - ServeRest API Testing
+## Sprint 6 - Semana 12 - Robot Framework Automation
 
 ## 🎯 Objetivo
-Validar endpoints críticos da API ServeRest hospedada na EC2, cobrindo fluxos principais (smoke/CRUD) e cenários negativos essenciais.
+Validar endpoints críticos da API ServeRest através de automação completa com Robot Framework, cobrindo fluxos principais (CRUD), cenários negativos, integração end-to-end e testes data-driven.
 
-## 🌐 Ambiente
-- **SUT**: ServeRest na EC2
-- **BASE_URL**: http://54.242.186.180:3000
+## 🌐 Ambiente de Testes
+- **SUT Principal**: ServeRest na EC2 AWS (usado durante desenvolvimento)
+- **BASE_URL Atual**: http://98.88.16.61:3000
+- **Alternativa Pública**: https://serverest.dev/ (sempre disponível)
 - **Endpoints**: /status, /login, /usuarios, /produtos, /carrinhos
+
+> **Nota:** Os testes foram desenvolvidos e executados contra uma instância EC2 AWS dedicada. Para execução contínua, recomenda-se usar https://serverest.dev/ alterando apenas a variável `${BASE_URL}` no arquivo `variables.robot`.
 
 ## 📁 Estrutura do Projeto
 ```
 tests/
 ├── suites/
-│   ├── health.robot      # Testes de saúde da API
-│   ├── login.robot       # Testes de autenticação
-│   ├── usuarios.robot    # CRUD de usuários
-│   ├── produtos.robot    # CRUD de produtos
-│   └── carrinhos.robot   # CRUD de carrinhos
+│   ├── health.robot        # Health checks e performance (2 cenários)
+│   ├── login.robot         # Autenticação e tokens (6 cenários)
+│   ├── usuarios.robot      # CRUD usuários completo (9 cenários)
+│   ├── produtos.robot      # CRUD produtos com auth (8 cenários)
+│   ├── carrinhos.robot     # CRUD carrinhos e estoque (6 cenários)
+│   ├── integracao.robot    # Fluxos end-to-end (3 cenários)
+│   └── data_driven.robot   # Testes parametrizados (3 cenários)
 ├── resources/
-│   └── keywords.robot    # Keywords reutilizáveis
-└── variables.robot       # Configurações centrais
+│   └── keywords.robot      # 20+ keywords reutilizáveis
+├── data/
+│   └── test_data.robot     # Datasets para testes data-driven
+├── variables.robot         # Configurações centrais
+└── reports/                # Relatórios HTML/XML gerados
 ```
 
 ## 🚀 Execução dos Testes
@@ -29,73 +38,108 @@ tests/
 pip install robotframework robotframework-requests
 ```
 
-### Executar todos os testes
+### Execução Local
 ```bash
-robot -d reports tests/suites
+# Todos os testes (37 cenários)
+robot --outputdir reports tests/
+
+# Por suíte específica
+robot tests/suites/usuarios.robot
+robot tests/suites/carrinhos.robot
+
+# Com relatório customizado
+robot --outputdir reports --name "ServeRest_API_Tests" tests/
 ```
 
-### Executar por categoria
+### Execução Remota (EC2)
 ```bash
-# Smoke tests
-robot -d reports -i smoke tests/suites
+# Clonar repositório
+git clone https://github.com/ericllima/COMPASS-UOL-PBAIJUN25.git
+cd COMPASS-UOL-PBAIJUN25/Documentos/Sprint\ 6/Semana\ 12/tests/
 
-# Testes negativos
-robot -d reports -i negativo tests/suites
-
-# Endpoint específico
-robot -d reports tests/suites/login.robot
+# Executar
+robot .
 ```
 
 ## 📊 Resultados Finais
 
-**Taxa de Sucesso:** 80% (24/30 testes)  
-**Cobertura:** 4 módulos principais da API ServeRest
+**Taxa de Sucesso:** 89% (33/37 testes) ✅  
+**Cobertura:** 7 módulos completos da API ServeRest  
+**Status:** Challenge 03 concluído com excelência
 
 ### Por Módulo
-| Módulo | Testes | Passou | Taxa |
-|--------|--------|--------|------|
-| Health | 1 | 1 | 100% |
-| Login | 6 | 6 | 100% |
-| Carrinhos | 6 | 6 | 100% |
-| Produtos | 8 | 5 | 62% |
-| Usuários | 9 | 6 | 67% |
+| Módulo | Testes | Passou | Taxa | Status |
+|--------|--------|--------|------|--------|
+| **Health** | 2 | 2 | 100% | ✅ Completo |
+| **Login** | 6 | 6 | 100% | ✅ Completo |
+| **Carrinhos** | 6 | 6 | 100% | ✅ Completo |
+| **Integração** | 3 | 3 | 100% | ✅ Completo |
+| **Data-driven** | 3 | 3 | 100% | ✅ Completo |
+| **Produtos** | 8 | 6 | 75% | ⚠️ 2 falhas API |
+| **Usuários** | 9 | 7 | 78% | ⚠️ 2 falhas API |
 
-### Cenários Implementados
-- **H001:** Health check
-- **L001-L005:** Login e autenticação completa
-- **U001-U009:** CRUD usuários (6 sucessos, 3 falhas)
-- **P001-P008:** CRUD produtos (5 sucessos, 3 falhas)
-- **C001-C006:** CRUD carrinhos (100% sucesso)
+### Cenários Implementados (37 total)
+- **H001-H002:** Health check e performance
+- **L001-L006:** Login, autenticação e tokens completo
+- **U001-U009:** CRUD usuários com validações (7 sucessos, 2 falhas)
+- **P001-P008:** CRUD produtos com autenticação (6 sucessos, 2 falhas)
+- **C001-C006:** CRUD carrinhos e gestão de estoque (100% sucesso)
+- **I001-I003:** Testes de integração end-to-end (100% sucesso)
+- **DD001-DD003:** Testes data-driven parametrizados (100% sucesso)
 
-## 🏷️ Tags Disponíveis
-- `smoke` - Testes críticos de funcionalidade básica
-- `negativo` - Testes de cenários de erro
-- `health` - Testes de saúde da API
-- `login` - Testes de autenticação
-- `usuarios` - Testes de usuários
-- `produtos` - Testes de produtos
-- `carrinhos` - Testes de carrinhos
+## 🏷️ Tags e Execução Seletiva
+```bash
+# Por módulo
+robot -i health tests/          # Health checks
+robot -i login tests/           # Autenticação
+robot -i usuarios tests/        # CRUD usuários
+robot -i produtos tests/        # CRUD produtos
+robot -i carrinhos tests/       # CRUD carrinhos
+robot -i integracao tests/      # Fluxos end-to-end
+robot -i datadriven tests/      # Testes parametrizados
 
-## 📊 Estratégia de Execução
-- **D1**: Health + Login + CRUD Usuários/Produtos ✅
-- **D2**: Cenários negativos + Carrinhos ✅
-- **D3**: Validações avançadas + Token expirado ✅
-- **D4-D5**: Execução final + Relatórios ✅
+# Por tipo
+robot -i smoke tests/           # Testes críticos
+robot -i negativo tests/        # Cenários de erro
+robot -i crud tests/            # Operações CRUD
+```
 
-**Status Final:** 30 cenários implementados, 24 sucessos (80%)
+## 📊 Cronograma de Execução (Concluído)
+- **D1 (09/12)**: Setup + CRUD base → 23 cenários (100%) ✅
+- **D2 (10/12)**: Carrinhos implementado → 29 cenários (83%) ✅
+- **D3 (11/12)**: Correções + Keywords → 29 cenários (86%) ✅
+- **D4 (12/12)**: Integração + Data-driven → 37 cenários (89%) ✅
+- **D5 (13/12)**: Documentação final → 37 cenários (89%) ✅
+
+**Status Final:** 37 cenários implementados, 33 sucessos (89%) - **Challenge concluído!**
 
 ## 📋 Documentação
-- **[PROGRESSO_CHALLENGE.md](PROGRESSO_CHALLENGE.md)** - Progresso e resultados finais
-- **[docs/PLANO-D1.md](docs/PLANO-D1.md)** - Escopo inicial D1
+- **[docs/PROGRESSO_CHALLENGE.md](docs/PROGRESSO_CHALLENGE.md)** - Progresso completo do Challenge 03
+- **[docs/Plano de Teste - Serverest - Sprint 6.pdf](docs/Plano%20de%20Teste%20-%20Serverest%20-%20Sprint%206.pdf)** - Plano de testes em PDF
 
-## 🔧 Configuração
-O arquivo `variables.robot` contém as configurações centrais:
-- URL base da EC2
-- Headers padrão
-- Configuração de sessão HTTP
+## 🔧 Configuração Flexível
+### Para usar instância EC2:
+```robot
+${BASE_URL}    http://98.88.16.61:3000
+```
 
-## 📈 Relatórios
-Relatório final disponível em `reports/final/`:
-- `report.html` - Relatório visual com 30 testes
-- `log.html` - Log detalhado da execução
-- `output.xml` - Dados estruturados para CI/CD
+### Para usar ServeRest público:
+```robot
+${BASE_URL}    https://serverest.dev
+```
+
+## 📈 Relatórios e Evidências
+Relatórios disponíveis em `reports/`:
+- **`report.html`** - Relatório visual interativo (37 testes)
+- **`log.html`** - Log detalhado com requests/responses
+- **`output.xml`** - Dados estruturados para integração CI/CD
+
+## 🏆 Conquistas do Challenge
+- ✅ **115% do planejado** (37/32 cenários)
+- ✅ **89% taxa de sucesso** alcançada
+- ✅ **7 módulos funcionais** implementados
+- ✅ **20+ keywords reutilizáveis** desenvolvidas
+- ✅ **Documentação completa** entregue
+- ✅ **Execução remota** configurada (EC2)
+
+**Challenge 03 - Sprint 6 - Semana 12: CONCLUÍDO COM EXCELÊNCIA! 🎯**
