@@ -106,3 +106,70 @@ Get Auth Token
     [Documentation]    Alias para Get Valid Auth Token (compatibilidade)
     ${token}=    Get Valid Auth Token
     RETURN    ${token}
+
+Validate Response Schema
+    [Arguments]    ${response}    ${expected_keys}
+    [Documentation]    Valida se resposta contém chaves esperadas
+    ${body}=    Set Variable    ${response.json()}
+    FOR    ${key}    IN    @{expected_keys}
+        Dictionary Should Contain Key    ${body}    ${key}
+    END
+
+Measure Response Time
+    [Arguments]    ${method}    ${endpoint}    ${headers}=${EMPTY}    ${json}=${EMPTY}
+    [Documentation]    Mede tempo de resposta de uma requisição
+    ${start_time}=    Get Time    epoch
+    Run Keyword If    '${method}' == 'GET'
+    ...    GET On Session    booker    ${endpoint}
+    ...    ELSE IF    '${method}' == 'POST'
+    ...    POST On Session    booker    ${endpoint}    json=${json}    headers=${headers}
+    ${end_time}=    Get Time    epoch
+    ${response_time}=    Evaluate    ${end_time} - ${start_time}
+    RETURN    ${response_time}
+
+Create User From Data
+    [Arguments]    ${user_data_string}
+    [Documentation]    Cria usuário a partir de string de dados
+    @{user_parts}=    Split String    ${user_data_string}    |
+    &{user_data}=    Create Dictionary
+    ...    nome=${user_parts}[0]
+    ...    email=${user_parts}[1]
+    ...    password=${user_parts}[2]
+    ...    administrador=${user_parts}[3]
+    
+    ${resp}=    POST On Session    booker    /usuarios    json=${user_data}
+    Should Be Equal As Integers    ${resp.status_code}    201
+    ${user_id}=    Get From Dictionary    ${resp.json()}    _id
+    RETURN    ${user_id}
+
+Validate JSON Schema
+    [Arguments]    ${response}    ${schema_type}
+    [Documentation]    Valida schema JSON da resposta
+    ${body}=    Set Variable    ${response.json()}
+    
+    Run Keyword If    '${schema_type}' == 'user'
+    ...    Validate User Schema    ${body}
+    ...    ELSE IF    '${schema_type}' == 'product'
+    ...    Validate Product Schema    ${body}
+    ...    ELSE IF    '${schema_type}' == 'cart'
+    ...    Validate Cart Schema    ${body}
+
+Validate User Schema
+    [Arguments]    ${body}
+    Dictionary Should Contain Key    ${body}    _id
+    Dictionary Should Contain Key    ${body}    nome
+    Dictionary Should Contain Key    ${body}    email
+    Dictionary Should Contain Key    ${body}    administrador
+
+Validate Product Schema
+    [Arguments]    ${body}
+    Dictionary Should Contain Key    ${body}    _id
+    Dictionary Should Contain Key    ${body}    nome
+    Dictionary Should Contain Key    ${body}    preco
+    Dictionary Should Contain Key    ${body}    quantidade
+
+Validate Cart Schema
+    [Arguments]    ${body}
+    Dictionary Should Contain Key    ${body}    produtos
+    Dictionary Should Contain Key    ${body}    precoTotal
+    Dictionary Should Contain Key    ${body}    quantidadeTotal
