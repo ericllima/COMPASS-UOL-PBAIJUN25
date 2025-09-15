@@ -28,6 +28,7 @@ Este repositório utiliza branches para organizar o desenvolvimento:
 - `sprint-1` - Sprint 1
 - `sprint-2` - Sprint 2
 - `sprint-3` - Sprint 3
-- [`Sprint 4`](./Documentos/Sprint%204) - Sprint 4
-- [`Sprint 5`](./Documentos/Sprint%205) - Sprint 5
-- [`Sprint 6`](./Documentos/Sprint%206) - Sprint 6 (Atual - Semana 12)
+- [`Sprint-4`](./Documentos/Sprint%204) - Sprint 4
+- [`Sprint-5`](./Documentos/Sprint%205) - Sprint 5
+- [`Sprint-6`](./Documentos/Sprint%206) - Sprint 6
+- `Sprint-7` - Sprint 7 (Atual - Semana 13)
