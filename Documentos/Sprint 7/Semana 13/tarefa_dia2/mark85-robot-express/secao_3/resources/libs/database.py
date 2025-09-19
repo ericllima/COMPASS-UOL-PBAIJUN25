@@ -1,3 +1,4 @@
+import bcrypt
 from robot.api.deco import keyword
 from pymongo import MongoClient
 
@@ -24,6 +25,15 @@ def insert_user(name, email, password):
 
 @keyword('Insert user into database')
 def insert_user(user):
+
+    hash_pass = bcrypt.hashpw(user['password'].encode('utf-8'), bcrypt.gensalt(8))
+
+    doc = {
+        'name': user['name'],
+        'email': user['email'],
+        'password': hash_pass
+    }
+
     users = db['users']
-    users.insert_one(user)
+    users.insert_one(doc)
     print(user)

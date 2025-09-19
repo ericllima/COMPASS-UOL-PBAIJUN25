@@ -165,11 +165,30 @@ Não deve cadastrar com senhas muito curta
         Alert Should Be    Informe uma senha com pelo menos 6 digitos
     END
 
-#Não deve cadastrar com senha de 2 dígitos
- #   [Tags]    short_pass
-  #  [Template]
-  #  Short password    12
+Não deve cadastrar com senha de 1 dígito
+    [Tags]    short_pass
+    [Template]    
+    Short password    1
 
+Não deve cadastrar com senha de 2 dígitos
+    [Tags]    short_pass
+    [Template]
+    Short password    12
+
+Não deve cadastrar com senha de 3 dígitos
+    [Tags]    short_pass
+    [Template]
+    Short password    123
+
+Não deve cadastrar com senha de 4 dígitos
+    [Tags]    short_pass
+    [Template]
+    Short password    1234
+
+Não deve cadastrar com senha de 5 dígitos
+    [Tags]    short_pass
+    [Template]
+    Short password    12345
 
 #*** Keywords ***
 #Short password
