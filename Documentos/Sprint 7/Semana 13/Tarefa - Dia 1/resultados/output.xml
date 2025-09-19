@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generator="Robot 7.3.2 (Python 3.13.7 on win32)" generated="2025-09-15T17:06:45.900137" rpa="false" schemaversion="5">
+<suite id="s1" name="Mapeamento" source="C:\Users\Eric\IdeaProjects\COMPASS-UOL-PBAIJUN25\Documentos\Sprint 7\Semana 13\Tarefa - Dia 1\mapeamento.robot">
+<test id="s1-t1" name="Estrategia 1 - ID (Mais Estavel)" line="9">
+<kw name="Open Browser" owner="SeleniumLibrary">
+<msg time="2025-09-15T17:06:46.772682" level="INFO">Opening browser 'chrome' to base url 'https://www.amazon.com.br'.</msg>
+<arg>${AMAZON_URL}</arg>
+<arg>chrome</arg>
+<doc>Opens a new browser instance to the optional ``url``.</doc>
+<status status="PASS" start="2025-09-15T17:06:46.772288" elapsed="4.002264"/>
+</kw>
+<kw name="Wait Until Element Is Visible" owner="SeleniumLibrary">
+<arg>id:twotabsearchtextbox</arg>
+<arg>${TIMEOUT}</arg>
+<doc>Waits until the element ``locator`` is visible.</doc>
+<status status="PASS" start="2025-09-15T17:06:50.775185" elapsed="0.214716"/>
+</kw>
+<kw name="Input Text" owner="SeleniumLibrary">
+<msg time="2025-09-15T17:06:50.990773" level="INFO">Typing text 'smartphone' into text field 'id:twotabsearchtextbox'.</msg>
+<arg>id:twotabsearchtextbox</arg>
+<arg>smartphone</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="PASS" start="2025-09-15T17:06:50.990455" elapsed="0.352864"/>
+</kw>
+<kw name="Click Element" owner="SeleniumLibrary">
+<msg time="2025-09-15T17:06:51.344147" level="INFO">Clicking element 'id:nav-search-submit-button'.</msg>
+<arg>id:nav-search-submit-button</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<status status="PASS" start="2025-09-15T17:06:51.343844" elapsed="3.405236"/>
+</kw>
+<kw name="Sleep" owner="BuiltIn">
+<msg time="2025-09-15T17:06:56.750390" level="INFO">Slept 2 seconds.</msg>
+<arg>2s</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="PASS" start="2025-09-15T17:06:54.749606" elapsed="2.001091"/>
+</kw>
+<kw name="Close Browser" owner="SeleniumLibrary" type="TEARDOWN">
+<doc>Closes the current browser.</doc>
+<status status="PASS" start="2025-09-15T17:06:56.751773" elapsed="2.538733"/>
+</kw>
+<doc>Usando IDs únicos - estratégia mais confiável</doc>
+<status status="PASS" start="2025-09-15T17:06:46.770597" elapsed="12.520595"/>
+</test>
+<test id="s1-t2" name="Estrategia 2 - CSS Selector com Classes" line="23">
+<kw name="Open Browser" owner="SeleniumLibrary">
+<msg time="2025-09-15T17:06:59.295163" level="INFO">Opening browser 'chrome' to base url 'https://www.amazon.com.br'.</msg>
+<arg>${AMAZON_URL}</arg>
+<arg>chrome</arg>
+<doc>Opens a new browser instance to the optional ``url``.</doc>
+<status status="PASS" start="2025-09-15T17:06:59.294504" elapsed="4.283941"/>
+</kw>
+<kw name="Wait Until Element Is Visible" owner="SeleniumLibrary">
+<arg>id:nav-cart</arg>
+<arg>${TIMEOUT}</arg>
+<doc>Waits until the element ``locator`` is visible.</doc>
+<status status="PASS" start="2025-09-15T17:07:03.578955" elapsed="0.177739"/>
+</kw>
+<kw name="Click Element" owner="SeleniumLibrary">
+<msg time="2025-09-15T17:07:03.757507" level="INFO">Clicking element 'id:nav-cart'.</msg>
+<arg>id:nav-cart</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<status status="PASS" start="2025-09-15T17:07:03.757201" elapsed="1.512214"/>
+</kw>
+<kw name="Sleep" owner="BuiltIn">
+<msg time="2025-09-15T17:07:07.270558" level="INFO">Slept 2 seconds.</msg>
+<arg>2s</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="PASS" start="2025-09-15T17:07:05.269918" elapsed="2.000934"/>
+</kw>
+<kw name="Close Browser" owner="SeleniumLibrary" type="TEARDOWN">
+<doc>Closes the current browser.</doc>
+<status status="PASS" start="2025-09-15T17:07:07.272000" elapsed="2.550911"/>
+</kw>
+<doc>Usando classes CSS - boa performance</doc>
+<status status="PASS" start="2025-09-15T17:06:59.293083" elapsed="10.530514"/>
+</test>
+<test id="s1-t3" name="Estrategia 3 - XPath com Texto" line="34">
+<kw name="Open Browser" owner="SeleniumLibrary">
+<msg time="2025-09-15T17:07:09.827637" level="INFO">Opening browser 'chrome' to base url 'https://www.amazon.com.br'.</msg>
+<arg>${AMAZON_URL}</arg>
+<arg>chrome</arg>
+<doc>Opens a new browser instance to the optional ``url``.</doc>
+<status status="PASS" start="2025-09-15T17:07:09.827014" elapsed="4.593018"/>
+</kw>
+<kw name="Wait Until Element Is Visible" owner="SeleniumLibrary">
+<arg>xpath://a[contains(text(),'Livros')]</arg>
+<arg>${TIMEOUT}</arg>
+<doc>Waits until the element ``locator`` is visible.</doc>
+<status status="PASS" start="2025-09-15T17:07:14.420536" elapsed="0.204490"/>
+</kw>
+<kw name="Click Element" owner="SeleniumLibrary">
+<msg time="2025-09-15T17:07:14.626255" level="INFO">Clicking element 'xpath://a[contains(text(),'Livros')]'.</msg>
+<arg>xpath://a[contains(text(),'Livros')]</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<status status="PASS" start="2025-09-15T17:07:14.625794" elapsed="2.473144"/>
+</kw>
+<kw name="Sleep" owner="BuiltIn">
+<msg time="2025-09-15T17:07:19.100323" level="INFO">Slept 2 seconds.</msg>
+<arg>2s</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="PASS" start="2025-09-15T17:07:17.099644" elapsed="2.000903"/>
+</kw>
+<kw name="Close Browser" owner="SeleniumLibrary" type="TEARDOWN">
+<doc>Closes the current browser.</doc>
+<status status="PASS" start="2025-09-15T17:07:19.101427" elapsed="2.588902"/>
+</kw>
+<doc>XPath por texto - flexível mas pode quebrar com i18n</doc>
+<status status="PASS" start="2025-09-15T17:07:09.825535" elapsed="11.865499"/>
+</test>
+<test id="s1-t4" name="Estrategia 4 - Atributos Data" line="45">
+<kw name="Open Browser" owner="SeleniumLibrary">
+<msg time="2025-09-15T17:07:21.694772" level="INFO">Opening browser 'chrome' to base url 'https://www.amazon.com.br'.</msg>
+<arg>${AMAZON_URL}</arg>
+<arg>chrome</arg>
+<doc>Opens a new browser instance to the optional ``url``.</doc>
+<status status="PASS" start="2025-09-15T17:07:21.694161" elapsed="4.381447"/>
+</kw>
+<kw name="Input Text" owner="SeleniumLibrary">
+<msg time="2025-09-15T17:07:26.076625" level="INFO">Typing text 'notebook' into text field 'id:twotabsearchtextbox'.</msg>
+<arg>id:twotabsearchtextbox</arg>
+<arg>notebook</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="PASS" start="2025-09-15T17:07:26.076293" elapsed="0.416061"/>
+</kw>
+<kw name="Click Element" owner="SeleniumLibrary">
+<msg time="2025-09-15T17:07:26.493252" level="INFO">Clicking element 'id:nav-search-submit-button'.</msg>
+<arg>id:nav-search-submit-button</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<status status="PASS" start="2025-09-15T17:07:26.492937" elapsed="2.732992"/>
+</kw>
+<kw name="Wait Until Element Is Visible" owner="SeleniumLibrary">
+<arg>css:[data-asin]:not([data-asin=""])</arg>
+<arg>${TIMEOUT}</arg>
+<doc>Waits until the element ``locator`` is visible.</doc>
+<status status="PASS" start="2025-09-15T17:07:29.226532" elapsed="0.214230"/>
+</kw>
+<kw name="Click Element" owner="SeleniumLibrary">
+<msg time="2025-09-15T17:07:29.441509" level="INFO">Clicking element 'css:[data-asin]:first-child'.</msg>
+<arg>css:[data-asin]:first-child</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<status status="PASS" start="2025-09-15T17:07:29.441229" elapsed="0.326010"/>
+</kw>
+<kw name="Sleep" owner="BuiltIn">
+<msg time="2025-09-15T17:07:31.768566" level="INFO">Slept 2 seconds.</msg>
+<arg>2s</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="PASS" start="2025-09-15T17:07:29.767956" elapsed="2.000795"/>
+</kw>
+<kw name="Close Browser" owner="SeleniumLibrary" type="TEARDOWN">
+<doc>Closes the current browser.</doc>
+<status status="PASS" start="2025-09-15T17:07:31.769432" elapsed="2.523255"/>
+</kw>
+<doc>Usando data-attributes - estável para SPAs</doc>
+<status status="PASS" start="2025-09-15T17:07:21.692824" elapsed="12.600585"/>
+</test>
+<test id="s1-t5" name="Estrategia 5 - CSS Hierarquico" line="58">
+<kw name="Open Browser" owner="SeleniumLibrary">
+<msg time="2025-09-15T17:07:34.297806" level="INFO">Opening browser 'chrome' to base url 'https://www.amazon.com.br'.</msg>
+<arg>${AMAZON_URL}</arg>
+<arg>chrome</arg>
+<doc>Opens a new browser instance to the optional ``url``.</doc>
+<status status="PASS" start="2025-09-15T17:07:34.296648" elapsed="3.636899"/>
+</kw>
+<kw name="Wait Until Element Is Visible" owner="SeleniumLibrary">
+<msg time="2025-09-15T17:07:41.156910" level="INFO" html="true">&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td colspan="3"&gt;&lt;a href="selenium-screenshot-1.png"&gt;&lt;img src="selenium-screenshot-1.png" width="800px"&gt;&lt;/a&gt;</msg>
+<msg time="2025-09-15T17:07:41.157293" level="FAIL">Element 'css:#nav-logo' not visible after 3 seconds.</msg>
+<arg>css:#nav-logo</arg>
+<arg>${TIMEOUT}</arg>
+<doc>Waits until the element ``locator`` is visible.</doc>
+<status status="FAIL" start="2025-09-15T17:07:37.934343" elapsed="3.229383">Element 'css:#nav-logo' not visible after 3 seconds.</status>
+</kw>
+<kw name="Click Element" owner="SeleniumLibrary">
+<arg>css:#nav-logo</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<status status="NOT RUN" start="2025-09-15T17:07:41.164468" elapsed="0.000089"/>
+</kw>
+<kw name="Sleep" owner="BuiltIn">
+<arg>2s</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="NOT RUN" start="2025-09-15T17:07:41.165031" elapsed="0.000081"/>
+</kw>
+<kw name="Close Browser" owner="SeleniumLibrary" type="TEARDOWN">
+<doc>Closes the current browser.</doc>
+<status status="PASS" start="2025-09-15T17:07:41.166048" elapsed="2.607888"/>
+</kw>
+<doc>Navegação por hierarquia CSS - resiliente</doc>
+<status status="FAIL" start="2025-09-15T17:07:34.295303" elapsed="9.479224">Element 'css:#nav-logo' not visible after 3 seconds.</status>
+</test>
+<status status="FAIL" start="2025-09-15T17:06:45.903383" elapsed="57.873563"/>
+</suite>
+<statistics>
+<total>
+<stat pass="4" fail="1" skip="0">All Tests</stat>
+</total>
+<tag>
+</tag>
+<suite>
+<stat name="Mapeamento" id="s1" pass="4" fail="1" skip="0">Mapeamento</stat>
+</suite>
+</statistics>
+<errors>
+</errors>
+</robot>

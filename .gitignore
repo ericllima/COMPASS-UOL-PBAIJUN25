@@ -205,3 +205,18 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+# Node.js
+node_modules/
+package-lock.json
+npm-debug.log*
+
+# Robot Framework
+log.html
+report.html
+output.xml
+selenium-screenshot-*.png
+
+# IDE
+.vscode/
+.idea/
